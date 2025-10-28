@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 720px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#1f77b4", "font": {"color": "#222"}, "id": "ANCASH", "label": "Ancash", "shape": "circle", "size": 40, "title": "Gobierno Regional de Ancash (2005)\u003cbr\u003eHHI (contratos): 0.042\u003cbr\u003eEmpresas: 24 | Contratos: 24"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10282902082.0", "label": "10282902082.0", "shape": "dot", "size": 17, "title": "Empresa: 10282902082.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20108736659", "label": "20108736659", "shape": "dot", "size": 17, "title": "Empresa: 20108736659"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20165813996", "label": "20165813996", "shape": "dot", "size": 17, "title": "Empresa: 20165813996"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20227662108", "label": "20227662108", "shape": "dot", "size": 17, "title": "Empresa: 20227662108"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20358000348", "label": "20358000348", "shape": "dot", "size": 17, "title": "Empresa: 20358000348"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20364680687", "label": "20364680687", "shape": "dot", "size": 17, "title": "Empresa: 20364680687"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20364766999", "label": "20364766999", "shape": "dot", "size": 17, "title": "Empresa: 20364766999"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20406905226", "label": "20406905226", "shape": "dot", "size": 17, "title": "Empresa: 20406905226"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20445016358", "label": "20445016358", "shape": "dot", "size": 17, "title": "Empresa: 20445016358"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20445389201", "label": "20445389201", "shape": "dot", "size": 17, "title": "Empresa: 20445389201"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20449282729", "label": "20449282729", "shape": "dot", "size": 17, "title": "Empresa: 20449282729"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20453914268", "label": "20453914268", "shape": "dot", "size": 17, "title": "Empresa: 20453914268"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20488351398", "label": "20488351398", "shape": "dot", "size": 17, "title": "Empresa: 20488351398"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20489263123", "label": "20489263123", "shape": "dot", "size": 17, "title": "Empresa: 20489263123"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20505935251", "label": "20505935251", "shape": "dot", "size": 17, "title": "Empresa: 20505935251"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530592520", "label": "20530592520", "shape": "dot", "size": 17, "title": "Empresa: 20530592520"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530696902", "label": "20530696902", "shape": "dot", "size": 17, "title": "Empresa: 20530696902"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530774806", "label": "20530774806", "shape": "dot", "size": 17, "title": "Empresa: 20530774806"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530784275", "label": "20530784275", "shape": "dot", "size": 17, "title": "Empresa: 20530784275"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530813399", "label": "20530813399", "shape": "dot", "size": 17, "title": "Empresa: 20530813399"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530862250", "label": "20530862250", "shape": "dot", "size": 17, "title": "Empresa: 20530862250"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530867561", "label": "20530867561", "shape": "dot", "size": 17, "title": "Empresa: 20530867561"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530891438", "label": "20530891438", "shape": "dot", "size": 17, "title": "Empresa: 20530891438"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530894291", "label": "20530894291", "shape": "dot", "size": 17, "title": "Empresa: 20530894291"}]);
+                  edges = new vis.DataSet([{"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,752,927.75", "to": "10282902082.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,752,927.75", "to": "20108736659", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 417,479.13", "to": "20165813996", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 89,991.74", "to": "20227662108", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 573,460.37", "to": "20358000348", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 733,647.15", "to": "20364680687", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 72,831.45", "to": "20364766999", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 351,537.77", "to": "20406905226", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 381,121.25", "to": "20445016358", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 380,095.03", "to": "20445389201", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 252,814.56", "to": "20449282729", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 768,976.25", "to": "20453914268", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 231,416.02", "to": "20488351398", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 804,824.97", "to": "20489263123", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 873,492.43", "to": "20505935251", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 338,718.32", "to": "20530592520", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 437,482.94", "to": "20530696902", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 193,710.59", "to": "20530774806", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 65,880.59", "to": "20530784275", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 621,234.28", "to": "20530813399", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 483,602.17", "to": "20530862250", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 89,956.94", "to": "20530867561", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 438,888.56", "to": "20530891438", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 134,256.95", "to": "20530894291", "value": 1, "width": 3.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 1, "shape": "dot"}, "edges": {"smooth": {"type": "dynamic"}}, "interaction": {"hover": true, "tooltipDelay": 100}, "physics": {"stabilization": {"iterations": 200}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
