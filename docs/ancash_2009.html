@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 720px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#1f77b4", "font": {"color": "#222"}, "id": "ANCASH", "label": "Ancash", "shape": "circle", "size": 40, "title": "Gobierno Regional de Ancash (2009)\u003cbr\u003eHHI (contratos): 0.018\u003cbr\u003eEmpresas: 69 | Contratos: 77"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10011195607", "label": "10011195607", "shape": "dot", "size": 17, "title": "Empresa: 10011195607"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10081870492.0", "label": "10081870492.0", "shape": "dot", "size": 17, "title": "Empresa: 10081870492.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10086478981", "label": "10086478981", "shape": "dot", "size": 17, "title": "Empresa: 10086478981"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10103154931", "label": "10103154931", "shape": "dot", "size": 17, "title": "Empresa: 10103154931"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10105503836.0", "label": "10105503836.0", "shape": "dot", "size": 17, "title": "Empresa: 10105503836.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10179063455", "label": "10179063455", "shape": "dot", "size": 17, "title": "Empresa: 10179063455"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10320420011", "label": "10320420011", "shape": "dot", "size": 17, "title": "Empresa: 10320420011"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "10328628002", "label": "10328628002", "shape": "dot", "size": 17, "title": "Empresa: 10328628002"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20103349932.0", "label": "20103349932.0", "shape": "dot", "size": 24, "title": "Empresa: 20103349932.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20105602091.0", "label": "20105602091.0", "shape": "dot", "size": 17, "title": "Empresa: 20105602091.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20108290111.0", "label": "20108290111.0", "shape": "dot", "size": 17, "title": "Empresa: 20108290111.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20114128822.0", "label": "20114128822.0", "shape": "dot", "size": 17, "title": "Empresa: 20114128822.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20118271107.0", "label": "20118271107.0", "shape": "dot", "size": 17, "title": "Empresa: 20118271107.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20131871776.0", "label": "20131871776.0", "shape": "dot", "size": 17, "title": "Empresa: 20131871776.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20134427389.0", "label": "20134427389.0", "shape": "dot", "size": 17, "title": "Empresa: 20134427389.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20136339240", "label": "20136339240", "shape": "dot", "size": 17, "title": "Empresa: 20136339240"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20227111055", "label": "20227111055", "shape": "dot", "size": 17, "title": "Empresa: 20227111055"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20257690581.0", "label": "20257690581.0", "shape": "dot", "size": 17, "title": "Empresa: 20257690581.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20263346328", "label": "20263346328", "shape": "dot", "size": 17, "title": "Empresa: 20263346328"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20279551932.0", "label": "20279551932.0", "shape": "dot", "size": 17, "title": "Empresa: 20279551932.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20286977759", "label": "20286977759", "shape": "dot", "size": 17, "title": "Empresa: 20286977759"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20300690999.0", "label": "20300690999.0", "shape": "dot", "size": 17, "title": "Empresa: 20300690999.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20336707618", "label": "20336707618", "shape": "dot", "size": 17, "title": "Empresa: 20336707618"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20391622371", "label": "20391622371", "shape": "dot", "size": 17, "title": "Empresa: 20391622371"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20397543987.0", "label": "20397543987.0", "shape": "dot", "size": 17, "title": "Empresa: 20397543987.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20398604734", "label": "20398604734", "shape": "dot", "size": 17, "title": "Empresa: 20398604734"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20407781105", "label": "20407781105", "shape": "dot", "size": 17, "title": "Empresa: 20407781105"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20407797877.0", "label": "20407797877.0", "shape": "dot", "size": 17, "title": "Empresa: 20407797877.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20407876238", "label": "20407876238", "shape": "dot", "size": 17, "title": "Empresa: 20407876238"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20407890818", "label": "20407890818", "shape": "dot", "size": 17, "title": "Empresa: 20407890818"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20408997667.0", "label": "20408997667.0", "shape": "dot", "size": 17, "title": "Empresa: 20408997667.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20423626462", "label": "20423626462", "shape": "dot", "size": 17, "title": "Empresa: 20423626462"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20423626462.0", "label": "20423626462.0", "shape": "dot", "size": 17, "title": "Empresa: 20423626462.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20425648340", "label": "20425648340", "shape": "dot", "size": 17, "title": "Empresa: 20425648340"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20439051982.0", "label": "20439051982.0", "shape": "dot", "size": 17, "title": "Empresa: 20439051982.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20440128557.0", "label": "20440128557.0", "shape": "dot", "size": 17, "title": "Empresa: 20440128557.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20445102947.0", "label": "20445102947.0", "shape": "dot", "size": 17, "title": "Empresa: 20445102947.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20445327272", "label": "20445327272", "shape": "dot", "size": 17, "title": "Empresa: 20445327272"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20445572820.0", "label": "20445572820.0", "shape": "dot", "size": 17, "title": "Empresa: 20445572820.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20445646530.0", "label": "20445646530.0", "shape": "dot", "size": 17, "title": "Empresa: 20445646530.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20451238630.0", "label": "20451238630.0", "shape": "dot", "size": 17, "title": "Empresa: 20451238630.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20453832024.0", "label": "20453832024.0", "shape": "dot", "size": 24, "title": "Empresa: 20453832024.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20458659321", "label": "20458659321", "shape": "dot", "size": 17, "title": "Empresa: 20458659321"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20460420262", "label": "20460420262", "shape": "dot", "size": 17, "title": "Empresa: 20460420262"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20471593185.0", "label": "20471593185.0", "shape": "dot", "size": 17, "title": "Empresa: 20471593185.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20480858817", "label": "20480858817", "shape": "dot", "size": 17, "title": "Empresa: 20480858817"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20481146951.0", "label": "20481146951.0", "shape": "dot", "size": 17, "title": "Empresa: 20481146951.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20481883971.0", "label": "20481883971.0", "shape": "dot", "size": 24, "title": "Empresa: 20481883971.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20484206997.0", "label": "20484206997.0", "shape": "dot", "size": 17, "title": "Empresa: 20484206997.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20488652321", "label": "20488652321", "shape": "dot", "size": 24, "title": "Empresa: 20488652321"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20491865921.0", "label": "20491865921.0", "shape": "dot", "size": 17, "title": "Empresa: 20491865921.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20502397568.0", "label": "20502397568.0", "shape": "dot", "size": 17, "title": "Empresa: 20502397568.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20505736215.0", "label": "20505736215.0", "shape": "dot", "size": 17, "title": "Empresa: 20505736215.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20510782764.0", "label": "20510782764.0", "shape": "dot", "size": 17, "title": "Empresa: 20510782764.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20516407566.0", "label": "20516407566.0", "shape": "dot", "size": 17, "title": "Empresa: 20516407566.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20519117844.0", "label": "20519117844.0", "shape": "dot", "size": 17, "title": "Empresa: 20519117844.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20520789031", "label": "20520789031", "shape": "dot", "size": 17, "title": "Empresa: 20520789031"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530875238.0", "label": "20530875238.0", "shape": "dot", "size": 17, "title": "Empresa: 20530875238.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20530971113", "label": "20530971113", "shape": "dot", "size": 17, "title": "Empresa: 20530971113"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20531091281", "label": "20531091281", "shape": "dot", "size": 17, "title": "Empresa: 20531091281"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20531609647.0", "label": "20531609647.0", "shape": "dot", "size": 17, "title": "Empresa: 20531609647.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20533902261.0", "label": "20533902261.0", "shape": "dot", "size": 17, "title": "Empresa: 20533902261.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20533971823", "label": "20533971823", "shape": "dot", "size": 45, "title": "Empresa: 20533971823"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20533974415.0", "label": "20533974415.0", "shape": "dot", "size": 17, "title": "Empresa: 20533974415.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20534029927", "label": "20534029927", "shape": "dot", "size": 17, "title": "Empresa: 20534029927"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20534072181", "label": "20534072181", "shape": "dot", "size": 17, "title": "Empresa: 20534072181"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20534081333.0", "label": "20534081333.0", "shape": "dot", "size": 17, "title": "Empresa: 20534081333.0"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20534106697", "label": "20534106697", "shape": "dot", "size": 17, "title": "Empresa: 20534106697"}, {"color": "#6baed6", "font": {"color": "#222"}, "id": "20534170786.0", "label": "20534170786.0", "shape": "dot", "size": 17, "title": "Empresa: 20534170786.0"}]);
+                  edges = new vis.DataSet([{"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,276,185.40", "to": "10011195607", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 4,617,905.21", "to": "10081870492.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,965,304.75", "to": "10086478981", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 4,617,905.21", "to": "10103154931", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,276,185.40", "to": "10105503836.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,903,653.05", "to": "10179063455", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 5,743,550.42", "to": "10320420011", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,246,582.41", "to": "10328628002", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 6,244,202.55", "to": "20103349932.0", "value": 2, "width": 5.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,218,277.18", "to": "20105602091.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 4,617,905.21", "to": "20108290111.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,965,304.75", "to": "20114128822.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 5,743,550.42", "to": "20118271107.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,246,582.41", "to": "20131871776.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,903,653.05", "to": "20134427389.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,896,753.75", "to": "20136339240", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,235,147.54", "to": "20227111055", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,896,753.75", "to": "20257690581.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,236,313.75", "to": "20263346328", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,276,185.40", "to": "20279551932.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 281,558.62", "to": "20286977759", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,896,753.75", "to": "20300690999.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,921,409.16", "to": "20336707618", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,815,043.40", "to": "20391622371", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,903,653.05", "to": "20397543987.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,212,868.95", "to": "20398604734", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 281,226.88", "to": "20407781105", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,276,185.40", "to": "20407797877.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 245,399.00", "to": "20407876238", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 282,421.00", "to": "20407890818", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 8,031,969.30", "to": "20408997667.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,320,735.76", "to": "20423626462", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 5,743,550.42", "to": "20423626462.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 4,031,333.60", "to": "20425648340", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,218,277.18", "to": "20439051982.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,903,653.05", "to": "20440128557.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,923,868.41", "to": "20445102947.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 189,806.90", "to": "20445327272", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,246,582.41", "to": "20445572820.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,236,313.75", "to": "20445646530.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 8,031,969.30", "to": "20451238630.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 7,064,286.18", "to": "20453832024.0", "value": 2, "width": 5.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 4,374,782.09", "to": "20458659321", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 8,031,969.30", "to": "20460420262", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,896,753.75", "to": "20471593185.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,218,277.18", "to": "20480858817", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,921,409.16", "to": "20481146951.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 6,244,202.55", "to": "20481883971.0", "value": 2, "width": 5.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,236,313.75", "to": "20484206997.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 561,785.03", "to": "20488652321", "value": 2, "width": 5.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,320,735.76", "to": "20491865921.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 5,789,041.01", "to": "20502397568.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,896,753.75", "to": "20505736215.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 4,031,333.60", "to": "20510782764.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,320,735.76", "to": "20516407566.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,218,277.18", "to": "20519117844.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 5,789,041.01", "to": "20520789031", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,235,147.54", "to": "20530875238.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,923,868.41", "to": "20530971113", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 252,366.63", "to": "20531091281", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,965,304.75", "to": "20531609647.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 4,617,905.21", "to": "20533902261.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 5 | Monto total: S/ 1,309,019.73", "to": "20533971823", "value": 5, "width": 11.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 3,923,868.41", "to": "20533974415.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 185,204.25", "to": "20534029927", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 283,876.07", "to": "20534072181", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,236,313.75", "to": "20534081333.0", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 243,045.89", "to": "20534106697", "value": 1, "width": 3.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 282,421.00", "to": "20534170786.0", "value": 1, "width": 3.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 1, "shape": "dot"}, "edges": {"smooth": {"type": "dynamic"}}, "interaction": {"hover": true, "tooltipDelay": 100}, "physics": {"stabilization": {"iterations": 200}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
