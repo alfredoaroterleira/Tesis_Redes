@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 720px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "#222"}, "group": "region", "id": "ANCASH", "label": "Ancash", "shape": "circle", "size": 40, "title": "Regi\u00f3n: Ancash\u003cbr\u003eDegree: 31\u003cbr\u003eDegree ponderado (#contratos): 39\u003cbr\u003eBetweenness: 0.430\u003cbr\u003eCloseness: 0.660"}, {"font": {"color": "#222"}, "group": "region", "id": "PASCO", "label": "Pasco", "shape": "circle", "size": 40, "title": "Regi\u00f3n: Pasco\u003cbr\u003eDegree: 15\u003cbr\u003eDegree ponderado (#contratos): 17\u003cbr\u003eBetweenness: 0.097\u003cbr\u003eCloseness: 0.319"}, {"font": {"color": "#222"}, "group": "empresa", "id": "10283106000.0", "label": "10283106000.0", "shape": "dot", "size": 10, "title": "Empresa: 10283106000.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20100240301.0", "label": "20100240301.0", "shape": "dot", "size": 10, "title": "Empresa: 20100240301.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20101178103", "label": "20101178103", "shape": "dot", "size": 10, "title": "Empresa: 20101178103\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20191808241.0", "label": "20191808241.0", "shape": "dot", "size": 10, "title": "Empresa: 20191808241.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20214487960.0", "label": "20214487960.0", "shape": "dot", "size": 10, "title": "Empresa: 20214487960.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20260933419.0", "label": "20260933419.0", "shape": "dot", "size": 10, "title": "Empresa: 20260933419.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20314050763", "label": "20314050763", "shape": "dot", "size": 10, "title": "Empresa: 20314050763\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20394882489.0", "label": "20394882489.0", "shape": "dot", "size": 10, "title": "Empresa: 20394882489.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20398613563", "label": "20398613563", "shape": "dot", "size": 14, "title": "Empresa: 20398613563\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 3\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20402741971.0", "label": "20402741971.0", "shape": "dot", "size": 12, "title": "Empresa: 20402741971.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 2\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20402986655.0", "label": "20402986655.0", "shape": "dot", "size": 10, "title": "Empresa: 20402986655.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20403335097", "label": "20403335097", "shape": "dot", "size": 10, "title": "Empresa: 20403335097\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20425648340.0", "label": "20425648340.0", "shape": "dot", "size": 12, "title": "Empresa: 20425648340.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 2\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20445309371", "label": "20445309371", "shape": "dot", "size": 10, "title": "Empresa: 20445309371\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20445309371.0", "label": "20445309371.0", "shape": "dot", "size": 10, "title": "Empresa: 20445309371.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20445571424", "label": "20445571424", "shape": "dot", "size": 12, "title": "Empresa: 20445571424\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 2\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20445585051.0", "label": "20445585051.0", "shape": "dot", "size": 10, "title": "Empresa: 20445585051.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20451238630", "label": "20451238630", "shape": "dot", "size": 10, "title": "Empresa: 20451238630\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20451238630.0", "label": "20451238630.0", "shape": "dot", "size": 10, "title": "Empresa: 20451238630.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20451360605.0", "label": "20451360605.0", "shape": "dot", "size": 10, "title": "Empresa: 20451360605.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20458476757", "label": "20458476757", "shape": "dot", "size": 10, "title": "Empresa: 20458476757\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20502942183", "label": "20502942183", "shape": "dot", "size": 14, "title": "Empresa: 20502942183\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 3\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20503729521", "label": "20503729521", "shape": "dot", "size": 10, "title": "Empresa: 20503729521\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20503729521.0", "label": "20503729521.0", "shape": "dot", "size": 10, "title": "Empresa: 20503729521.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20511317038", "label": "20511317038", "shape": "dot", "size": 10, "title": "Empresa: 20511317038\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20511317038.0", "label": "20511317038.0", "shape": "dot", "size": 10, "title": "Empresa: 20511317038.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20515430505", "label": "20515430505", "shape": "dot", "size": 10, "title": "Empresa: 20515430505\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20517845371", "label": "20517845371", "shape": "dot", "size": 12, "title": "Empresa: 20517845371\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 2\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20517845371.0", "label": "20517845371.0", "shape": "dot", "size": 10, "title": "Empresa: 20517845371.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20530993605", "label": "20530993605", "shape": "dot", "size": 10, "title": "Empresa: 20530993605\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20530993605.0", "label": "20530993605.0", "shape": "dot", "size": 10, "title": "Empresa: 20530993605.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.335"}, {"font": {"color": "#222"}, "group": "empresa", "id": "10224353478.0", "label": "10224353478.0", "shape": "dot", "size": 10, "title": "Empresa: 10224353478.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20101031854", "label": "20101031854", "shape": "dot", "size": 10, "title": "Empresa: 20101031854\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20110867647", "label": "20110867647", "shape": "dot", "size": 10, "title": "Empresa: 20110867647\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20113675005", "label": "20113675005", "shape": "dot", "size": 10, "title": "Empresa: 20113675005\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20127619965.0", "label": "20127619965.0", "shape": "dot", "size": 10, "title": "Empresa: 20127619965.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20145769249", "label": "20145769249", "shape": "dot", "size": 10, "title": "Empresa: 20145769249\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20204035785.0", "label": "20204035785.0", "shape": "dot", "size": 10, "title": "Empresa: 20204035785.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20268887785", "label": "20268887785", "shape": "dot", "size": 12, "title": "Empresa: 20268887785\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 2\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20349311608.0", "label": "20349311608.0", "shape": "dot", "size": 12, "title": "Empresa: 20349311608.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 2\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20407415931", "label": "20407415931", "shape": "dot", "size": 10, "title": "Empresa: 20407415931\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20452551668.0", "label": "20452551668.0", "shape": "dot", "size": 10, "title": "Empresa: 20452551668.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20486840928", "label": "20486840928", "shape": "dot", "size": 10, "title": "Empresa: 20486840928\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20489451558.0", "label": "20489451558.0", "shape": "dot", "size": 10, "title": "Empresa: 20489451558.0\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20489522919", "label": "20489522919", "shape": "dot", "size": 10, "title": "Empresa: 20489522919\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}, {"font": {"color": "#222"}, "group": "empresa", "id": "20514084620", "label": "20514084620", "shape": "dot", "size": 10, "title": "Empresa: 20514084620\u003cbr\u003eDegree: 1\u003cbr\u003eDegree ponderado (#contratos): 1\u003cbr\u003eBetweenness: 0.000\u003cbr\u003eCloseness: 0.165"}]);
+                  edges = new vis.DataSet([{"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,752,412.37", "to": "10283106000.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 35,868,606.01", "to": "20100240301.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 309,000.00", "to": "20101178103", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 35,868,606.01", "to": "20191808241.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,280,126.38", "to": "20214487960.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,780,737.12", "to": "20260933419.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 35,868,606.01", "to": "20314050763", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 5,518,489.44", "to": "20394882489.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 3 | Monto total: S/ 2,939,730.76", "to": "20398613563", "value": 3, "width": 5.5}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 4,118,745.00", "to": "20402741971.0", "value": 2, "width": 4.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 309,000.00", "to": "20402986655.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 273,171.82", "to": "20403335097", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 4,860,885.46", "to": "20425648340.0", "value": 2, "width": 4.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,280,126.38", "to": "20445309371", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 2,838,618.62", "to": "20445309371.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 4,118,745.00", "to": "20445571424", "value": 2, "width": 4.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 273,171.82", "to": "20445585051.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,597,386.81", "to": "20451238630", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,839,038.31", "to": "20451238630.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 309,000.00", "to": "20451360605.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,369,027.94", "to": "20458476757", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 3 | Monto total: S/ 9,646,195.08", "to": "20502942183", "value": 3, "width": 5.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 608,226.99", "to": "20503729521", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 775,119.58", "to": "20503729521.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,839,038.31", "to": "20511317038", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,597,386.81", "to": "20511317038.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,752,412.37", "to": "20515430505", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 2 | Monto total: S/ 4,860,885.46", "to": "20517845371", "value": 2, "width": 4.0}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 1,346,968.52", "to": "20517845371.0", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 775,119.58", "to": "20530993605", "value": 1, "width": 2.5}, {"from": "ANCASH", "title": "# contratos: 1 | Monto total: S/ 608,226.99", "to": "20530993605.0", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 224,609.36", "to": "10224353478.0", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 33,003,292.90", "to": "20101031854", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 767,738.10", "to": "20110867647", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 33,003,292.90", "to": "20113675005", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 33,003,292.90", "to": "20127619965.0", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 643,431.56", "to": "20145769249", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 33,003,292.90", "to": "20204035785.0", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 2 | Monto total: S/ 1,702,128.33", "to": "20268887785", "value": 2, "width": 4.0}, {"from": "PASCO", "title": "# contratos: 2 | Monto total: S/ 1,702,128.33", "to": "20349311608.0", "value": 2, "width": 4.0}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 776,209.37", "to": "20407415931", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 767,738.10", "to": "20452551668.0", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 1,054,828.17", "to": "20486840928", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 643,431.56", "to": "20489451558.0", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 808,824.10", "to": "20489522919", "value": 1, "width": 2.5}, {"from": "PASCO", "title": "# contratos: 1 | Monto total: S/ 224,609.36", "to": "20514084620", "value": 1, "width": 2.5}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 1, "shape": "dot"}, "edges": {"smooth": {"type": "dynamic"}}, "interaction": {"hover": true, "tooltipDelay": 100}, "physics": {"stabilization": {"iterations": 200}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

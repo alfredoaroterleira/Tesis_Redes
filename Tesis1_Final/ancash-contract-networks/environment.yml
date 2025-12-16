@@ -1,0 +1,22 @@
+name: ancash-contract-networks
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - pandas
+  - numpy
+  - networkx
+  - matplotlib
+  - jupyter
+  - seaborn
+  - plotly
+  - openpyxl
+  - scikit-learn
+  - pyyaml
+  - flask
+  - flask-cors
+  - requests
+  - beautifulsoup4
+  - pytest
+  - nbconvert
+  - ipykernel

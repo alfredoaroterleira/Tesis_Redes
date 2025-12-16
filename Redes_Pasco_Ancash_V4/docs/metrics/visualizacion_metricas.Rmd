@@ -1,0 +1,12 @@
+---
+title: "Visualización"
+author: "Alfredo Aro"
+date: "2025-11-24"
+output: html_document
+---
+
+```{r}
+library(rio)
+red_general = import("resumen_empresas_")
+```
+

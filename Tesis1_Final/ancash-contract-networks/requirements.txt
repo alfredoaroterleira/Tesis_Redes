@@ -1,0 +1,11 @@
+import pandas
+networkx
+matplotlib
+jupyter
+notebook
+numpy
+scipy
+plotly
+pandas_profiling
+pyvis
+seaborn

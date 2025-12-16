@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancash Contract Networks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/vis.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Redes de Contratación en Ancash</h1>
+        <h2>Año: {{ year }}</h2>
+        <div id="network"></div>
+        <script>
+            // Data for the network visualization
+            var nodes = new vis.DataSet({{ nodes | safe }});
+            var edges = new vis.DataSet({{ edges | safe }});
+
+            // Create a network
+            var container = document.getElementById('network');
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {
+                layout: {
+                    hierarchical: false
+                },
+                physics: {
+                    enabled: true
+                }
+            };
+            var network = new vis.Network(container, data, options);
+        </script>
+    </div>
+</body>
+</html>

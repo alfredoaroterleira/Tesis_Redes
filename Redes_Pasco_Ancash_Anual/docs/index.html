@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Redes de contratación - Regiones seleccionadas</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:18px;background:#fafafa}
+.container{max-width:1200px;margin:0 auto}
+h1{font-size:20px;margin:0 0 14px}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+label,select,button,small,span{font-size:14px}
+iframe{width:100%;height:78vh;border:1px solid #e3e3e3;border-radius:10px;background:#fff}
+button{padding:6px 10px;border:1px solid #ddd;border-radius:8px;background:#fff;cursor:pointer}
+button:hover{background:#f2f2f2}
+.kpi{background:#fff;border:1px solid #e7e7e7;border-radius:8px;padding:6px 10px}
+.kpi b{font-weight:600}
+small{color:#666}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Redes de contratación • Regiones seleccionadas</h1>
+  <div class="bar">
+    <button onclick="prev()">⟨ Anterior</button>
+    <label for="year">Año:</label>
+    <select id="year" onchange="go(this.value)"></select>
+    <button onclick="next()">Siguiente ⟩</button>
+    <span class="kpi" id="kpi">—</span>
+    <small>
+      Nodos azules grandes = regiones; puntos celestes = empresas.
+      Grosor/tamaño dependen del # de contratos.
+      Al pasar el mouse se muestran Degree, Betweenness y Closeness de cada nodo.
+    </small>
+  </div>
+  <iframe id="view" src="" loading="lazy"></iframe>
+</div>
+<script>
+const items = [{"y": 2005, "f": "regiones_2005.html", "density": 0.0665024630541872, "n_regiones": 2, "n_empresas": 27, "n_contratos": 27}, {"y": 2006, "f": "regiones_2006.html", "density": 0.0475609756097561, "n_regiones": 2, "n_empresas": 39, "n_contratos": 52}, {"y": 2007, "f": "regiones_2007.html", "density": 0.052552552552552555, "n_regiones": 2, "n_empresas": 35, "n_contratos": 41}, {"y": 2008, "f": "regiones_2008.html", "density": 0.040780141843971635, "n_regiones": 2, "n_empresas": 46, "n_contratos": 56}, {"y": 2009, "f": "regiones_2009.html", "density": 0.027016742770167426, "n_regiones": 2, "n_empresas": 71, "n_contratos": 80}, {"y": 2010, "f": "regiones_2010.html", "density": 0.0125, "n_regiones": 2, "n_empresas": 158, "n_contratos": 174}, {"y": 2011, "f": "regiones_2011.html", "density": 0.01052572329168074, "n_regiones": 2, "n_empresas": 187, "n_contratos": 223}, {"y": 2012, "f": "regiones_2012.html", "density": 0.008658008658008658, "n_regiones": 2, "n_empresas": 229, "n_contratos": 285}, {"y": 2013, "f": "regiones_2013.html", "density": 0.017696267696267698, "n_regiones": 2, "n_empresas": 110, "n_contratos": 127}, {"y": 2014, "f": "regiones_2014.html", "density": 0.041666666666666664, "n_regiones": 1, "n_empresas": 47, "n_contratos": 54}, {"y": 2015, "f": "regiones_2015.html", "density": 0.0570409982174688, "n_regiones": 2, "n_empresas": 32, "n_contratos": 32}, {"y": 2016, "f": "regiones_2016.html", "density": 0.04439746300211417, "n_regiones": 2, "n_empresas": 42, "n_contratos": 45}, {"y": 2017, "f": "regiones_2017.html", "density": 0.010470639032815199, "n_regiones": 2, "n_empresas": 191, "n_contratos": 215}, {"y": 2018, "f": "regiones_2018.html", "density": 0.012985896112831097, "n_regiones": 2, "n_empresas": 151, "n_contratos": 171}, {"y": 2019, "f": "regiones_2019.html", "density": 0.02, "n_regiones": 2, "n_empresas": 98, "n_contratos": 107}, {"y": 2020, "f": "regiones_2020.html", "density": 0.0136986301369863, "n_regiones": 2, "n_empresas": 145, "n_contratos": 169}, {"y": 2021, "f": "regiones_2021.html", "density": 0.019797979797979797, "n_regiones": 2, "n_empresas": 98, "n_contratos": 116}, {"y": 2022, "f": "regiones_2022.html", "density": 0.009259259259259259, "n_regiones": 2, "n_empresas": 214, "n_contratos": 274}, {"y": 2023, "f": "regiones_2023.html", "density": 0.058712121212121215, "n_regiones": 2, "n_empresas": 31, "n_contratos": 33}, {"y": 2024, "f": "regiones_2024.html", "density": 0.025308025308025308, "n_regiones": 2, "n_empresas": 76, "n_contratos": 83}];
+let idx = 0;
+
+function fillSelect() {
+  const sel = document.getElementById('year');
+  sel.innerHTML = "";
+  items.forEach((it, i) => {
+    const o = document.createElement('option');
+    o.value = i;
+    o.textContent = it.y;
+    sel.appendChild(o);
+  });
+}
+
+function updateKPI() {
+  const it = items[idx];
+  const dens = (it.density !== null && !isNaN(it.density)) ? Number(it.density).toFixed(4) : "—";
+  document.getElementById('kpi').innerHTML =
+    `<b>Densidad red:</b> ${dens} | ` +
+    `<b>Regiones:</b> ${it.n_regiones} | ` +
+    `<b>Empresas:</b> ${it.n_empresas} | ` +
+    `<b>Contratos:</b> ${it.n_contratos}`;
+}
+
+function load() {
+  if (!items.length) return;
+  const it = items[idx];
+  document.getElementById('view').src = it.f;
+  document.getElementById('year').selectedIndex = idx;
+  updateKPI();
+}
+
+function go(i) { idx = parseInt(i); load(); }
+function prev() { idx = (idx - 1 + items.length) % items.length; load(); }
+function next() { idx = (idx + 1) % items.length; load(); }
+
+fillSelect();
+load();
+</script>
+</body>
+</html>
